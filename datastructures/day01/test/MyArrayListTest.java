@@ -58,7 +58,9 @@ public class MyArrayListTest {
 
     @Test
     public void testAddIndexThrows(){
+        cows.print_cows();
         cows.add(4,JAQUAN);
+        cows.print_cows();
         assertEquals(5,cows.size());
         boolean error = false;
         try {
