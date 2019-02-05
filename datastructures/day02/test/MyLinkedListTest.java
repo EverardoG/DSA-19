@@ -88,8 +88,10 @@ public class MyLinkedListTest {
 
     @Test
     public void testRemove() {
+        MyLinkedList test = chickens;
         assertEquals(chickens.remove(1), GEORGY);
         assertEquals(chickens.remove(1), LILY);
+
         assertEquals(chickens.remove(1), JIMI);
         assertEquals(1, chickens.size());
         assertEquals(chickens.remove(0), DELILAH);
