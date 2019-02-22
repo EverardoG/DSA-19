@@ -21,6 +21,9 @@ public class QuickSort extends SortAlgorithm {
     @Override
     public int[] sort(int[] array) {
         // TODO: Sort the array. Make sure you avoid the O(N^2) runtime worst-case
+
+        // shuffle the array first to avoid worst case runtime
+        
         return array;
     }
 
