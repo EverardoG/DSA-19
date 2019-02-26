@@ -2,10 +2,12 @@ import java.util.HashMap;
 
 public class LargestSubArray {
     static int[] largestSubarray(int[] nums) {
-        // TODO
+        // running total to hold on to info about numbers
         int total = 0;
         int subLen;
         HashMap<Integer, int[]> subArrayDict = new HashMap<>();
+
+        // initialize stuff for finding longest subarray
         int longest = 0;
         int[] longestInds = {0,0};
         int[] initInds = {0,0};

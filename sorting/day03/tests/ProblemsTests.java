@@ -30,11 +30,12 @@ public class ProblemsTests {
      */
     @Test
     public void testSortNumsUnder100() {
-        int[] array_lengths = new int[]{10, 100, 1000, 100000};
+        int[] array_lengths = new int[]{10,100, 1000, 100000};
         for (int l : array_lengths) {
             int[] A = generateRandomArrayOfSize(l, -100, 101);
             int[] sorted = sort(A);
             Problems.sortNumsBetween100s(A);
+
             assertArrayEquals(A, sorted);
         }
     }

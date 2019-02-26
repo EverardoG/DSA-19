@@ -25,7 +25,7 @@ public class CountingSortTests {
     public void testCountingSort() {
         int[] max_values = new int[]{10, 100, 1000};
         for (int m : max_values) {
-            int[] A = generateRandomArrayOfSize(100000, 0, m);
+            int[] A = generateRandomArrayOfSize(1000, 0, m);
             int[] sorted = sort(A);
             CountingSort.countingSort(A);
             assertArrayEquals(A, sorted);
