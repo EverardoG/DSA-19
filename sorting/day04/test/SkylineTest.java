@@ -1,6 +1,7 @@
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -24,6 +25,18 @@ public class SkylineTest {
         }
     }
 
+    @Test
+    public void mergeTests(){
+        // testing simple merge of two skylines right next to eachother
+        Skyline.Building[] myFunc1 = Skyline.merge(buildings(new int[][]{{0,3,2}}), buildings(new int[][]{{3,3,3}}));
+
+        // testing merge of two skylines slightly separated
+        Skyline.Building[] myFunc2 = Skyline.merge(buildings(new int[][]{{0,3,2}}), buildings(new int[][]{{4,5,3}}));
+
+        // testing merge of two overlapping skylines
+        Skyline.Building[] myFunc3 = Skyline.merge(buildings(new int[][]{{1,6,2}}), buildings(new int[][]{{2,4,1},{4,7,4}}));
+
+    }
 
     @Test
     public void one() {
