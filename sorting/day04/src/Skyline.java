@@ -35,6 +35,7 @@ public class Skyline {
             return newSkyline;
         }
 
+        // this merges them in way that takes into account a gap between the left and right
         else if (leftSkyline[leftSkyInd].r < rightSkyLine[rightSkyInd].l){
             Building[] newSkyline = new Building[leftSkyline.length + rightSkyLine.length+1];
             System.arraycopy(leftSkyline, 0, newSkyline, 0, leftSkyline.length);
@@ -49,10 +50,6 @@ public class Skyline {
         // only if they're greater than what's already there
 
         int heightsLen = Math.max(rightSkyLine[rightSkyLine.length-1].r, leftSkyline[leftSkyline.length-1].r)+1;
-//        if (rightSkyLine[rightSkyInd].r != 0){
-//            heightsLen++;
-//        }
-
         int[] heights = new int[heightsLen];
         for (Building building: leftSkyline){
             for (int i = building.l ; i < building.r; i++){
