@@ -1,7 +1,7 @@
 public class TreeNode<T extends Comparable<T>> {
     T key;
     TreeNode<T> leftChild, rightChild;
-    int height;
+    public int height;
 
     public TreeNode(T key) {
         this(key, 0);
