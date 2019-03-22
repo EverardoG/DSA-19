@@ -85,16 +85,21 @@ public class PeakFinding {
         //          return the indicies of the peak if you're there
         //          decrease the problem space by following the gradient if not
 
-        int val = nums[y][x];
         // Base Case: You're at a peak
         if ((peakY(x,y,nums)==0) && (peakX(x,y,nums)==0)){
             int[] answer = {y, x};
             return answer;
         }
 
-        // Decrease Case: Not at a peak - Follow the gradient
-        return TwoDRecurse(nums, x + peakX(x,y,nums), y + peakY(x,y,nums));
+        // Decrease Case 1: Not at a peak - Follow the gradient
+        else if (nums[y + peakY(x, y, nums)][x + peakX(x, y, nums)] > nums[x][y]) {
+            return TwoDRecurse(nums, x + peakX(x, y, nums), y + peakY(x, y, nums));
+        }
 
+        // Decrease Case 2: hit edge case for gradient ascent, ascend along x
+        else{
+            return TwoDRecurse(nums, x + peakX(x, y, nums), y);
+        }
     }
 
     public static int[] findTwoDPeak(int[][] nums) {
