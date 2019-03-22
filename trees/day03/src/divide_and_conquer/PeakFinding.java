@@ -49,15 +49,59 @@ public class PeakFinding {
         return maxIndex;
     }
 
+    // start - starting index to recurse through
+    // end - ending index to recurse through
+    private static int OneDRecurse(int[] nums, int start, int end){
+        // Conquer: Determine whether or not the middle is a peak
+        int midInd = (end-start)/2+start;
+        int peakCase = peakOneD(midInd, nums);
+
+        // Base Case: found peak, return it
+        if (peakCase == 0){
+            return midInd;
+        }
+
+        // Decrease Case 1: not the peak, try the left
+        else if (peakCase == -1){
+            return OneDRecurse(nums, start, midInd);
+        }
+
+        // Decrease Case 2: not the peak, try the right
+        else{
+            return OneDRecurse(nums, midInd+1, end);
+        }
+
+
+    }
 
     public static int findOneDPeak(int[] nums) {
         // TODO
-        return 0;
+        // runtime: O(lgN)
+        return OneDRecurse(nums, 0, nums.length-1);
+    }
+
+    private static int[] TwoDRecurse(int[][] nums, int x, int y){
+        // Conquer: Determine whether you are at a peak
+        //          return the indicies of the peak if you're there
+        //          decrease the problem space by following the gradient if not
+
+        int val = nums[y][x];
+        // Base Case: You're at a peak
+        if ((peakY(x,y,nums)==0) && (peakX(x,y,nums)==0)){
+            int[] answer = {y, x};
+            return answer;
+        }
+
+        // Decrease Case: Not at a peak - Follow the gradient
+        return TwoDRecurse(nums, x + peakX(x,y,nums), y + peakY(x,y,nums));
+
     }
 
     public static int[] findTwoDPeak(int[][] nums) {
         // TODO
-        return null;
+
+        // find a 2D peak in the array
+        return TwoDRecurse(nums,  0, 0);
     }
 
 }

@@ -76,6 +76,9 @@ public class RangeTest {
     void testRangeCount3() {
         assertEquals(correctRange(inputs[0], 2, 5).length, rangeTree[0].rangeCount(2, 5));
     }
+//    void testRangeCount3() {
+//        assertEquals(correctRange(inputs[0], 2, 5).length, rangeTree[0].rangeCount(2, 5));
+//    }
 
     @Test
     void testRangeCount4() {
@@ -200,6 +203,8 @@ public class RangeTest {
             Integer[] received = Arrays.copyOf(traversal, traversal.length, Integer[].class);
             assertValidAVL(bst.root);
             assertArrayEquals(expected, received);
+
+            // wtf, why is this here?
             assertArrayEquals(correctRange(toIntegerArray(list.toArray()), lo, hi), bst.rangeIndex(lo, hi).toArray());
             assertEquals(correctRange(toIntegerArray(list.toArray()), lo, hi).length, bst.rangeCount(lo, hi));
         }
