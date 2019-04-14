@@ -1,6 +1,8 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
@@ -36,6 +38,24 @@ public class PuzzleTest {
         assertEquals(board.isGoal(), false);
     }
 
+    /**
+     * Test method for boolean isGoal(). (the one they forgot rip)
+     */
+    @Test
+    public void testGoal1() {
+        int[][] solvedBoi = {{1, 2, 3}, {4, 5, 6}, {7, 8, 0}};
+        Board solvedBoard = new Board(solvedBoi);
+        assertEquals(solvedBoard.isGoal(), true);
+    }
+
+    @Test
+    public void testNeighbors() {
+        int[][] solvedBoi = {{1, 2, 3}, {4, 5, 6}, {7, 8, 0}};
+        Board solvedBoard = new Board(solvedBoi);
+        Iterable<Board> boards = solvedBoard.neighbors();
+        int fuckingdebuggernotworkinghowiwant = 500/3;
+    }
+
     // Test solver with several initial board states
 
     /**
@@ -51,6 +71,7 @@ public class PuzzleTest {
         solver = new Solver(new Board(new int[][]{{1, 8, 2},{0,4,3},{7,6,5}}));
         assertEquals(solver.isSolvable(), true);
         solver = new Solver(new Board(new int[][]{{8, 1, 2},{0,4,3},{7,6,5}}));
+        boolean temp = solver.isSolvable();
         assertEquals(solver.isSolvable(), false);
     }
 

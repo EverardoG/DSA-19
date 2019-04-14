@@ -8,7 +8,7 @@ import java.util.*;
 public class Solver {
 
     public int minMoves = -1;
-    private State solutionState;
+    private State solutionState; // this is the current state the solver is in
     private boolean solved = false;
 
     /**
@@ -27,7 +27,11 @@ public class Solver {
             this.moves = moves;
             this.prev = prev;
             // TODO
-            cost = 0;
+            cost = board.manhattan() + moves;
+        }
+
+        public int compareTo(State s){
+            return cost - s.cost;
         }
 
         @Override
@@ -44,7 +48,11 @@ public class Solver {
      */
     private State root(State state) {
         // TODO: Your code here
-        return null;
+        State rootState = state;
+        while (rootState.prev != null){
+            rootState = rootState.prev;
+        }
+        return rootState;
     }
 
     /*
@@ -54,6 +62,35 @@ public class Solver {
      */
     public Solver(Board initial) {
         // TODO: Your code here
+        solutionState = new State(initial, 0, null);
+        if (!initial.solvable()){
+            return;
+        }
+        HashMap<Board, Integer> v = new HashMap<>();
+        v.put(solutionState.board, 0);
+        PriorityQueue<State> q = new PriorityQueue<>(State::compareTo);
+        q.add(solutionState);
+
+        while (!q.isEmpty() && !solved){
+            State currentState = q.poll();
+
+            // base case - congrats!
+            if (currentState.board.isGoal()) {
+                solutionState = currentState;
+                solved = true;
+                minMoves = solutionState.moves;
+            }
+
+            // loop through your neighbors
+            for (Board board : currentState.board.neighbors()){
+                if (!v.containsKey(board) || currentState.moves + 1 < v.get(board)){
+                    v.put(board, currentState.moves + 1);
+                    q.add(new State(board, currentState.moves + 1, currentState));
+                }
+            }
+
+        }
+
     }
 
     /*
@@ -62,7 +99,7 @@ public class Solver {
      */
     public boolean isSolvable() {
         // TODO: Your code here
-        return false;
+        return solutionState.board.solvable();
     }
 
     /*

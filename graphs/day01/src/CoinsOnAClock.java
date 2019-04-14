@@ -63,7 +63,6 @@ public class CoinsOnAClock {
                 else if (coin=='n') nCount++;
                 else if (coin=='d') dCount++;
             }
-
         }
     }
 }
