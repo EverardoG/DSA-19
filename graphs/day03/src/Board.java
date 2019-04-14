@@ -6,8 +6,8 @@ import java.util.List;
  */
 public class Board {
 
-    private int n;
-    public int[][] tiles;
+    private int n; // size of board (one side length)
+    public int[][] tiles; // how the tiles are set up
 
     //TODO
     // Create a 2D array representing the solved board state
@@ -18,6 +18,9 @@ public class Board {
      */
     public Board(int[][] b) {
         // TODO: Your code here
+        // set the board tiles and set the size
+        tiles = b;
+        n = tiles[0].length;
     }
 
     /*
@@ -26,7 +29,7 @@ public class Board {
      */
     private int size() {
         // TODO: Your code here
-        return 0;
+        return n;
     }
 
     /*
