@@ -7,6 +7,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class RubiksCube {
 
     private BitSet cube;
+    public int[][] cubies = new int[][]{{0, 16, 21}, {1, 17, 9}, {2, 5, 8}, {3, 4, 20}, {12, 19, 22}, {13, 18, 10}, {14, 6, 11}, {15, 7, 23}};
 
     // initialize a solved rubiks cube
     public RubiksCube() {
@@ -50,6 +51,61 @@ public class RubiksCube {
     @Override
     public int hashCode() {
         return cube.hashCode();
+    }
+
+    // prints a cube
+    public void printCube() {
+        int color;
+        System.out.print("{");
+        for (int i = 0; i < 24; i++) {
+            color = getColor(i);
+            if ((i+1) % 4 == 0) System.out.printf("%d;  ", color);
+            else System.out.printf("%d, ", color);
+        }
+        System.out.print("}\n");
+    }
+
+    private class State {
+        // Each state needs to keep track of its cost and the previous state
+        private RubiksCube rubiks;
+        private int moves; // equal to g-cost in A*
+        public double cost; // equal to f-cost in A*
+        public char lastMove; // rotation taken to get here
+        private State prev;
+
+        public State(RubiksCube rubiks, int moves, char lastMove, State prev) {
+            this.rubiks = rubiks;
+            this.moves = moves;
+            this.lastMove = lastMove;
+            this.prev = prev;
+            cost = (double) moves + cost();
+        }
+
+        @Override
+        public boolean equals(Object s) {
+            if (s == this) return true;
+            if (s == null) return false;
+            if (!(s instanceof State)) return false;
+            return ((State) s).rubiks.equals(this.rubiks);
+        }
+
+        public double cost() {
+            double total = 0;
+            int correctColor;
+            // for each cubie
+            for (int[] cubie : cubies) {
+                int cubieTotal = 0;
+                for (int square : cubie) {
+                    // determine how far each square is from where it's supposed to be
+                    correctColor = square / 4;
+                    // add it to the cubie if its not where it's supposed to be
+                    if (correctColor != rubiks.getColor(square)) cubieTotal++;
+                }
+                // add the cubie total to the total total, with an exponent of .652 to weight it
+                total += Math.pow((double) cubieTotal, .652); // this is DUMB.
+            }
+            return total;
+        }
     }
 
     public boolean isSolved() {
@@ -187,19 +243,85 @@ public class RubiksCube {
         return listTurns;
     }
 
-    // this is an initial BFS implementation
-    public void BFS(){
-        // make a  queue of visited things
-    }
-
 
     // return the list of rotations needed to solve a rubik's cube
-    public List<Character> solve() {
+    public List<Character> dummySolve() {
         // TODO
+        Character[] solvestr = {'f', 'U', 'F', 'r', 'f'};
+        ArrayList<Character> solution = new ArrayList<>(Arrays.asList(solvestr)) ;
+        RubiksCube rubiks = new RubiksCube(this);
+        rubiks.printCube();
 
+        for (char c : solution) {
+            rubiks = rubiks.rotate(c);
+        }
 
-        // hardcoding [f, U, F, r, f] for testSolve 7
-        return new ArrayList<>(Arrays.asList('f', 'U', 'F', 'r', 'f'));
+        rubiks.printCube();
+        if (rubiks.isSolved()) {
+            System.out.print("Solved!");
+        } else {
+            System.out.print("You had ONE JOB!");
+        }
+        return solution;
     }
 
+    private List<Character> unwrap(State curr) {
+        LinkedList<Character> solution = new LinkedList<>();
+        while (curr.lastMove != '\0') {
+            solution.addFirst(curr.lastMove);
+            curr = curr.prev;
+        }
+        return solution;
+    }
+
+    public List<Character> solve() {
+        HashMap<RubiksCube,Integer> visited = new HashMap<>();
+        // (o1, o2) -> {return o1.cost - o2.cost;} // for when cost is an int
+        Queue<State> queue = new PriorityQueue<>((o1, o2) -> {return Double.compare(o1.cost, o2.cost);});
+        visited.put(this, 0);
+        State curr = new State(this, 0, '\0', null);
+        queue.offer(curr);
+        char[] moves = new char[]{'r', 'R', 'u', 'U', 'f', 'F'};
+        RubiksCube newCube;
+
+        while (!queue.isEmpty()) {
+            curr = queue.remove();
+            if (curr.rubiks.isSolved()) {
+                return unwrap(curr);
+            }
+            for (char c : moves) {
+                newCube = curr.rubiks.rotate(c);
+                if (visited.get(newCube) == null || visited.get(newCube) > curr.moves + 1) {
+                    visited.put(newCube, curr.moves + 1);
+                    queue.add(new State(newCube, curr.moves + 1, c, curr));
+                }
+            }
+        }
+        return null;
+    }
+
+    public List<Character> BFSsolve() {
+        HashMap<RubiksCube,Integer> visited = new HashMap<>();
+        Queue<State> queue = new LinkedList<>();
+        visited.put(this, 0);
+        State curr = new State(this, 0, '\0', null);
+        queue.offer(curr);
+        char[] moves = new char[]{'r', 'R', 'u', 'U', 'f', 'F'};
+        RubiksCube newCube;
+
+        while (!queue.isEmpty()) {
+            curr = queue.remove();
+            if (curr.rubiks.isSolved()) {
+                return unwrap(curr);
+            }
+            for (char c : moves) {
+                newCube = curr.rubiks.rotate(c);
+                if (visited.get(newCube) == null) {
+                    visited.put(newCube, 0);
+                    queue.add(new State(newCube, 0, c, curr));
+                }
+            }
+        }
+        return null;
+    }
 }
