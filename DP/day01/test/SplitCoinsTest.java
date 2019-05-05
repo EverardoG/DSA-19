@@ -13,7 +13,7 @@ public class SplitCoinsTest {
      */
     @Test
     public void testSplitCoins() throws FileNotFoundException {
-        for(int i = 1; i <= 12; i++){
+        for (int i = 1; i <= 12; i++) {
             Scanner input = new Scanner(new File(
                     "testcases/divgold." + i + ".in"));
             Scanner output = new Scanner(new File(
@@ -21,7 +21,7 @@ public class SplitCoinsTest {
 
             int n = input.nextInt();
             int[] coins = new int[n];
-            for(int j = 0; j < n; j++){
+            for (int j = 0; j < n; j++) {
                 coins[j] = input.nextInt();
             }
 
